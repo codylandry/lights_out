@@ -1,17 +1,15 @@
 defmodule LightsOut.Game do
   alias LightsOut.Game.Board
 
-  defstruct [
-    players: [],
-    board: %{},
-    turn: 0,
-    winner: nil,
-  ]
+  defstruct players: [],
+            board: %{},
+            turn: 0,
+            winner: nil
 
   def new_game(size, difficulty, initial_player_name) do
     %LightsOut.Game{
       players: [initial_player_name],
-      board: Board.new(size, difficulty),
+      board: Board.new(size, difficulty)
     }
   end
 
@@ -19,8 +17,8 @@ defmodule LightsOut.Game do
     Enum.at(game.players, rem(game.turn, length(game.players)))
   end
 
-  def toggle(game, x, y) do
-    %{game | board: Board.toggle(game.board, x, y)}
+  def toggle(game, {x, y}) do
+    %{game | board: Board.toggle(game.board, {x, y})}
   end
 
   def is_solved?(game) do

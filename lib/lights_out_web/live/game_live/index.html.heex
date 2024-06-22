@@ -1,0 +1,28 @@
+<%= if assigns[:game] do %>
+  <div>
+    <ol>
+      <li :for={player <- @game.players}>
+        <%= player %>
+      </li>
+    </ol>
+  </div>
+
+  <div
+    class="grid gap-4"
+    style={"grid-template-columns: repeat(#{Game.Board.size(@game.board)}, 1fr)"}
+  >
+    <div
+      :for={{{x, y}, cell} <- @game.board}
+      phx-click="toggle-cell"
+      phx-value-x={x}
+      phx-value-y={y}
+    >
+      <%= cell %>
+    </div>
+  </div>
+<% else %>
+  Uh oh, looks like that room doesn't exist!
+
+  Check your room code and try again <input /> Or, you can start your own game!
+  <a href="#">Start a new game</a>
+<% end %>

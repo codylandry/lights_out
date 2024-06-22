@@ -1,3 +1,17 @@
+defmodule LightsOutWeb.LiveViewHelpers do
+  def ok(socket) do
+    {:ok, socket}
+  end
+
+  def noreply(socket) do
+    {:noreply, socket}
+  end
+
+  def reply(data, socket) do
+    {:reply, data, socket}
+  end
+end
+
 defmodule LightsOutWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
@@ -53,6 +67,8 @@ defmodule LightsOutWeb do
     quote do
       use Phoenix.LiveView,
         layout: {LightsOutWeb.Layouts, :app}
+
+      import LightsOutWeb.LiveViewHelpers
 
       unquote(html_helpers())
     end

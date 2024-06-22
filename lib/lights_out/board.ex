@@ -1,5 +1,4 @@
 defmodule LightsOut.Game.Board do
-
   # not all random setups are solvable, so we will start with an empty board and randomly toggle 'difficulty' number of cells to
   # ensure that the game is solvable.  The default difficulty is 10.
   def new(size \\ 5, difficulty \\ 5) do
@@ -38,6 +37,7 @@ defmodule LightsOut.Game.Board do
 
   def neighbors(board, {x, y}) do
     size = size(board)
+
     [
       {x, y + 1},
       {x, y - 1},
@@ -49,33 +49,27 @@ defmodule LightsOut.Game.Board do
 
   def size(board) do
     board
-    |> Map.keys
+    |> Map.keys()
     |> Enum.map(fn {x, _} -> x end)
     |> Enum.max()
   end
 
-  # log out a visual representation of the board using X for on and O for off
-  # as a markdown table
-  def log(board) do
+  # creates a string representation of the game board
+  def to_string(board) do
     size = size(board)
 
-    # Print the top border of the table
-    IO.puts("|" <> Enum.join(List.duplicate("---", size), "|") <> "|")
+    table =
+      Enum.map(1..size, fn y ->
+        Enum.map(1..size, fn x ->
+          if Map.get(board, {x, y}), do: "X", else: "O"
+        end)
+      end)
 
-    for y <- 1..size do
-      # Print each row with "|" as cell separators
-      for x <- 1..size do
-        IO.write("| ")
-        IO.write(if Map.get(board, {x, y}), do: "X", else: "O")
-        IO.write(" ")
-      end
-      # Print the right border of the table and start a new line
-      IO.puts("|")
+    Enum.join(Enum.map(table, &("| " <> Enum.join(&1, " ") <> " |")), "\n")
+  end
 
-      # Print the border between rows
-      IO.puts("|" <> Enum.join(List.duplicate("---", size), "|") <> "|")
-    end
-
+  def debug(board) do
+    IO.puts(board)
     board
   end
 end
