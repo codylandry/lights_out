@@ -35,3 +35,4 @@ lights_out-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.idea/
