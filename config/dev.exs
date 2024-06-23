@@ -46,7 +46,7 @@ config :lights_out, LightsOutWeb.Endpoint,
 config :lights_out, LightsOutWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg|wav)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/lights_out_web/(controllers|live|components)/.*(ex|heex)$"
     ]

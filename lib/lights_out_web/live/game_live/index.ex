@@ -44,7 +44,10 @@ defmodule LightsOutWeb.GameLive.Index do
     else
       Game.Server.toggle(socket.assigns.code, {String.to_integer(x), String.to_integer(y)})
       Game.Server.next_turn(socket.assigns.code)
-      socket |> noreply()
+
+      socket
+      |> push_event("toggle", %{})
+      |> noreply()
     end
   end
 

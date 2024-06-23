@@ -10,3 +10,12 @@
     background-origin: border-box;
     background-clip: padding-box, border-box;
 }
+
+.cell {
+    background-color: black;
+}
+
+.cell img {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 100 100" xml:space="preserve"><style type="text/css">.blur{filter:url(%23softedge);}</style><filter id="softedge"><feGaussianBlur stdDeviation="3.5"></feGaussianBlur></filter><g class="blur"><rect x="1" y="1" width="98" height="98"/></g></svg>');
+    -webkit-mask-size: cover;
+}

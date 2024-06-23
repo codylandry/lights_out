@@ -7,18 +7,20 @@
     </ol>
   </div>
 
-  <div
-    class="grid gap-1 w-96"
-    style={"grid-template-columns: repeat(#{Game.Board.size(@game.board)}, 1fr)"}
-  >
-    <div
-      :for={{{x, y}, cell} <- @game.board}
-      class={"#{if cell, do: "bg-fuchsia-500", else: "bg-fuchsia-900 brightness-1"} h-12"}
-      phx-click="toggle-cell"
-      phx-value-x={x}
-      phx-value-y={y}
-    >
+  <div class="relative">
+    <div class="grid gap-[10px] grid-cols-5 absolute h-[233px] left-[60px] top-[60px] w-[262px]">
+      <div
+        :for={{{x, y}, cell} <- @game.board}
+        class="cell"
+        phx-click="toggle-cell"
+        phx-value-x={x}
+        phx-value-y={y}
+      >
+        <img :if={cell} src={~p"/images/cell-on.png"} />
+        <img :if={!cell} src={~p"/images/cell-off.png"} />
+      </div>
     </div>
+    <img src={~p"/images/lightsout.png"} class="w-[384px] min-w-[384px]" />
   </div>
 <% else %>
   Uh oh, looks like that room doesn't exist!
@@ -26,5 +28,3 @@
   Check your room code and try again <input /> Or, you can start your own game!
   <a href="#">Start a new game</a>
 <% end %>
-
-<img src={~p"/images/lightsout.png"} />
