@@ -3,3 +3,10 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+.rounded-corners-gradient-borders {
+    border: double 4px transparent;
+    border-radius: 40px;
+    background-image: linear-gradient(#020617, #020617), radial-gradient(circle at top left, #f00, #3020ff);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}

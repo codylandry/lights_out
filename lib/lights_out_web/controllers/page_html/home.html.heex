@@ -1,27 +1,44 @@
 <.flash_group flash={@flash} />
 
-<h2>New Game</h2>
-<.simple_form :let={f} for={@new_game_form} action={~p"/game/new"}>
-  <.label for="new-difficulty">Difficulty</.label>
-  <.input id="new-difficulty" field={f["difficulty"]} type="number" placeholder="Difficulty" />
+<h1 class="drop-shadow-[0_0_100px_fuchsia] p-5 text-center font-sans font-bold text-7xl bg-gradient-to-r from-fuchsia-950 via-pink-700 to-fuchsia-800 text-transparent bg-clip-text">
+  Lights Out
+</h1>
 
-  <.label for="new-player-name">Username</.label>
-  <.input id="new-player-name" field={f["player_name"]} placeholder="Username" />
+<div class="flex w-screen justify-around pt-20">
+  <div class="rounded-corners-gradient-borders">
+    <div class="rounded-3xl p-10 ">
+      <h2 class="text-white text-2xl text-center">Create Game</h2>
+      <.simple_form :let={f} for={@new_game_form} action={~p"/game/new"}>
+        <.input
+          label="Difficulty"
+          id="new-difficulty"
+          field={f["difficulty"]}
+          type="number"
+          placeholder="Difficulty"
+        />
 
-  <:actions>
-    <.button>Save</.button>
-  </:actions>
-</.simple_form>
+        <.input label="Player Name" id="new-player-name" field={f["player_name"]} placeholder="" />
 
-<h2>Join a game</h2>
-<.simple_form :let={f} for={@existing_game_form} action={~p"/game/join"}>
-  <.label for="join-room-code">Room Code</.label>
-  <.input id="join-room-code" field={f["room_code"]} placeholder="Room Code" />
+        <:actions>
+          <.button>Start a new game</.button>
+        </:actions>
+      </.simple_form>
+    </div>
+  </div>
 
-  <.label for="join-player-name">Username</.label>
-  <.input id="join-player-name" field={f["player_name"]} placeholder="Username" />
+  <div class="rounded-corners-gradient-borders">
+    <div class="rounded-3xl p-10 ">
+      <h2 class="text-white text-2xl text-center">Join Game</h2>
 
-  <:actions>
-    <.button>Save</.button>
-  </:actions>
-</.simple_form>
+      <.simple_form :let={f} for={@existing_game_form} action={~p"/game/join"}>
+        <.input label="Room Code" field={f["room_code"]} placeholder="Room Code" />
+
+        <.input label="Player Name" field={f["player_name"]} placeholder="" />
+
+        <:actions>
+          <.button>Join in!</.button>
+        </:actions>
+      </.simple_form>
+    </div>
+  </div>
+</div>
