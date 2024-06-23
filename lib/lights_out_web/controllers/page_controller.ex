@@ -3,6 +3,9 @@ defmodule LightsOutWeb.PageController do
   alias LightsOut.Game
 
   def home(conn, _params) do
+    difficulty_options = ["Easy": 3, "Medium": 10, "Hard": 20]
+    default_difficulty = 10
+
     new_game_form = %{
       "difficulty" => 10,
       "player_name" => ""
@@ -18,7 +21,9 @@ defmodule LightsOutWeb.PageController do
     render(conn, :home,
       layout: false,
       new_game_form: new_game_form,
-      existing_game_form: existing_game_form
+      existing_game_form: existing_game_form,
+      difficulty_options: difficulty_options,
+      default_difficulty: default_difficulty
     )
   end
 

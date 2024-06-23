@@ -1,7 +1,7 @@
 <%= if assigns[:game] do %>
   <div>
     <ol>
-      <li :for={player <- @game.players} class={if player == @player, do: "text-red-400"}>
+      <li :for={player <- @game.players} class={player_class(assigns, player)}>
         <%= player %>
       </li>
     </ol>
@@ -26,3 +26,5 @@
   Check your room code and try again <input /> Or, you can start your own game!
   <a href="#">Start a new game</a>
 <% end %>
+
+<img src={~p"/images/lightsout.png"} />

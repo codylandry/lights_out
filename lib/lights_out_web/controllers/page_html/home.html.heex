@@ -13,7 +13,9 @@
           label="Difficulty"
           id="new-difficulty"
           field={f["difficulty"]}
-          type="number"
+          type="select"
+          value={@default_difficulty}
+          options={@difficulty_options}
           placeholder="Difficulty"
         />
 

@@ -51,6 +51,10 @@ defmodule LightsOut.Game.Server do
     GenServer.cast(via_tuple(room_code), {:remove_player, player_name})
   end
 
+  def next_turn(room_code) do
+    GenServer.cast(via_tuple(room_code), :next_turn)
+  end
+
   defp via_tuple(room_code), do: {:via, Registry, {Game.Registry, room_code}}
 
   defp create_room_code do
@@ -114,6 +118,14 @@ defmodule LightsOut.Game.Server do
     new_state
     |> broadcast()
     |> timeout_if_empty_game()
+  end
+
+  @impl true
+  def handle_cast(:next_turn, state) do
+    state
+    |> Map.put(:game, Game.next_turn(state.game))
+    |> broadcast()
+    |> noreply()
   end
 
   # when we timeout due to 0 players in the game, terminate the process

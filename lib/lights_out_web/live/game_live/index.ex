@@ -37,14 +37,42 @@ defmodule LightsOutWeb.GameLive.Index do
 
   @impl true
   def handle_event("toggle-cell", %{"x" => x, "y" => y}, socket) do
-    Game.Server.toggle(socket.assigns.code, {String.to_integer(x), String.to_integer(y)})
-    socket |> noreply()
+    if Game.current_player(socket.assigns.game) != socket.assigns.player do
+      socket
+      |> put_flash(:error, "It's not your turn")
+      |> noreply()
+    else
+      Game.Server.toggle(socket.assigns.code, {String.to_integer(x), String.to_integer(y)})
+      Game.Server.next_turn(socket.assigns.code)
+      socket |> noreply()
+    end
   end
 
   @impl true
   def handle_info({"game-updated", game}, socket) do
     socket
     |> assign(game: game)
+    |> flash_if_won(game)
     |> noreply()
+  end
+
+  defp flash_if_won(socket, game) do
+    if Game.is_solved?(game) do
+      socket
+      |> put_flash(:info, "Congratulations! You won!")
+    else
+      socket
+    end
+  end
+
+  defp player_class(assigns, player) do
+    this_player = assigns.player
+    current_player = Game.current_player(assigns.game)
+
+    case player do
+      ^this_player -> "text-red-900"
+      ^current_player -> "text-green-900"
+      _ -> "text-white"
+    end
   end
 end
