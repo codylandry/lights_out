@@ -1,15 +1,17 @@
 defmodule LightsOut.Game do
   alias LightsOut.Game.Board
 
+  @default_board_size 5
+
   defstruct players: [],
             board: %{},
             turn: 0,
             winner: nil
 
-  def new_game(size, difficulty, initial_player_name) do
+  def new_game(difficulty, initial_player_name) do
     %LightsOut.Game{
       players: [initial_player_name],
-      board: Board.new(size, difficulty)
+      board: Board.new(@default_board_size, difficulty)
     }
   end
 

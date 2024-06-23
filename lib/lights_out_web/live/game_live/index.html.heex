@@ -1,7 +1,7 @@
 <%= if assigns[:game] do %>
   <div>
     <ol>
-      <li :for={player <- @game.players}>
+      <li :for={player <- @game.players} class={if player == @player, do: "text-red-400"}>
         <%= player %>
       </li>
     </ol>

@@ -5,20 +5,25 @@ defmodule LightsOut.Game.Server do
 
   # client
 
-  def start(size, difficulty, player_name) do
+  def start(difficulty, player_name) do
     {:ok, _pid, room_code} =
       DynamicSupervisor.start_child(
         Game.Supervisor,
-        {Game.Server, [size, difficulty, player_name]}
+        {Game.Server, [difficulty, player_name]}
       )
 
     room_code
   end
 
-  def start_link([size, difficulty, player_name]) do
+  def start_link([difficulty, player_name]) do
     room_code = create_room_code()
-    game = Game.new_game(size, difficulty, player_name)
-    state = %{game: game, room_code: room_code}
+    game = Game.new_game(difficulty, player_name)
+
+    state = %{
+      game: game,
+      room_code: room_code
+    }
+
     {:ok, pid} = GenServer.start_link(__MODULE__, state, name: via_tuple(room_code))
     {:ok, pid, room_code}
   end
@@ -75,7 +80,6 @@ defmodule LightsOut.Game.Server do
 
   @impl true
   def init(state) do
-    dbg()
     state |> ok()
   end
 
@@ -102,12 +106,35 @@ defmodule LightsOut.Game.Server do
 
   @impl true
   def handle_cast({:remove_player, player_name}, state) do
-    state
-    |> Map.put(:game, Game.remove_player(state.game, player_name))
+    new_state =
+      state
+      |> Map.put(:game, Game.remove_player(state.game, player_name))
+      |> broadcast()
+
+    new_state
     |> broadcast()
-    |> noreply()
+    |> timeout_if_empty_game()
   end
 
+  # when we timeout due to 0 players in the game, terminate the process
+  @impl true
+  def handle_info(:timeout, state) do
+    DynamicSupervisor.terminate_child(Game.Supervisor, self())
+    stop(state, :reason)
+  end
+
+  # If the game is empty (0 players), set a timeout.
+  # if we don't get a message in that time, this will fire the handle_info(:timeout, state)
+  # callback, where we terminate the process
+  defp timeout_if_empty_game(state) do
+    if length(state.game.players) == 0 do
+      {:noreply, state, 30000}
+    else
+      {:noreply, state}
+    end
+  end
+
+  # publish changes to game state so liveviews can consume the changes to update local state
   defp broadcast(state) do
     PubSub.broadcast(
       LightsOut.PubSub,
@@ -121,4 +148,5 @@ defmodule LightsOut.Game.Server do
   defp ok(state), do: {:ok, state}
   defp reply(state, response), do: {:reply, response, state}
   defp noreply(state), do: {:noreply, state}
+  defp stop(state, reason), do: {:stop, reason, state}
 end

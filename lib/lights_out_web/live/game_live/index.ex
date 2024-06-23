@@ -5,6 +5,9 @@ defmodule LightsOutWeb.GameLive.Index do
   @impl true
   def mount(%{"code" => code, "player" => player}, _session, socket) do
     if connected?(socket) do
+      # ensures `terminate` runs when the process shuts down
+      Process.flag(:trap_exit, true)
+
       if Game.Server.does_exist?(code) do
         Game.Server.subscribe(code)
         Game.Server.add_player(code, player)
@@ -15,18 +18,22 @@ defmodule LightsOutWeb.GameLive.Index do
       else
         socket
         |> put_flash(:error, "Room #{code} not found")
+        |> redirect(to: ~p"/")
         |> ok()
       end
     else
-      {:ok, socket}
+      socket
+      |> assign(code: code, game: Game.new_game(0, player), player: player)
+      |> ok()
     end
   end
 
-  # def terminate(_reason, socket) do
-  #   if socket.assigns[:player] do
-  #     Game.Server.remove_player(socket.assigns.player)
-  #   end
-  # end
+  @impl true
+  def terminate(_reason, socket) do
+    if socket.assigns[:player] do
+      Game.Server.remove_player(socket.assigns.code, socket.assigns.player)
+    end
+  end
 
   @impl true
   def handle_event("toggle-cell", %{"x" => x, "y" => y}, socket) do

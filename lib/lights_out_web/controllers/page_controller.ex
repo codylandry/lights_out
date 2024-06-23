@@ -4,7 +4,6 @@ defmodule LightsOutWeb.PageController do
 
   def home(conn, _params) do
     new_game_form = %{
-      "size" => 5,
       "difficulty" => 10,
       "player_name" => ""
     }
@@ -24,10 +23,9 @@ defmodule LightsOutWeb.PageController do
   end
 
   def new(conn, params) do
-    # size = String.to_integer(params["size"])
-    # difficulty = String.to_integer(params["difficulty"])
+    difficulty = String.to_integer(params["difficulty"])
     name = params["player_name"]
-    code = Game.Server.start(5, 10, name)
+    code = Game.Server.start(difficulty, name)
     redirect(conn, to: ~p"/game/#{code}?player=#{name}")
   end
 

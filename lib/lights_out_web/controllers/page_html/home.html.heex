@@ -1,16 +1,27 @@
 <.flash_group flash={@flash} />
 
 <h2>New Game</h2>
-<.form :let={f} for={@new_game_form} action={~p"/game/new"}>
-  <%!-- <.input field={f["size"]} type="number" /> --%>
-  <%!-- <.input field={f["difficulty"]} type="number" /> --%>
-  <.input field={f["player_name"]} />
-  <button>submit</button>
-</.form>
+<.simple_form :let={f} for={@new_game_form} action={~p"/game/new"}>
+  <.label for="new-difficulty">Difficulty</.label>
+  <.input id="new-difficulty" field={f["difficulty"]} type="number" placeholder="Difficulty" />
+
+  <.label for="new-player-name">Username</.label>
+  <.input id="new-player-name" field={f["player_name"]} placeholder="Username" />
+
+  <:actions>
+    <.button>Save</.button>
+  </:actions>
+</.simple_form>
 
 <h2>Join a game</h2>
-<.form :let={f} for={@existing_game_form} action={~p"/game/join"}>
-  <.input field={f["room_code"]} />
-  <.input field={f["player_name"]} />
-  <button>submit</button>
-</.form>
+<.simple_form :let={f} for={@existing_game_form} action={~p"/game/join"}>
+  <.label for="join-room-code">Room Code</.label>
+  <.input id="join-room-code" field={f["room_code"]} placeholder="Room Code" />
+
+  <.label for="join-player-name">Username</.label>
+  <.input id="join-player-name" field={f["player_name"]} placeholder="Username" />
+
+  <:actions>
+    <.button>Save</.button>
+  </:actions>
+</.simple_form>
