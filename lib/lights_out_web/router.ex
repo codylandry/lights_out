@@ -19,6 +19,9 @@ defmodule LightsOutWeb.Router do
 
     get "/", PageController, :home
 
+    post "/game/new", PageController, :new
+    post "/game/join", PageController, :join
+
     live "/game/:code", GameLive.Index, :index
   end
 

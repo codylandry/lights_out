@@ -1,4 +1,16 @@
 <.flash_group flash={@flash} />
-<div>
-TEST
-</div>
+
+<h2>New Game</h2>
+<.form :let={f} for={@new_game_form} action={~p"/game/new"}>
+  <%!-- <.input field={f["size"]} type="number" /> --%>
+  <%!-- <.input field={f["difficulty"]} type="number" /> --%>
+  <.input field={f["player_name"]} />
+  <button>submit</button>
+</.form>
+
+<h2>Join a game</h2>
+<.form :let={f} for={@existing_game_form} action={~p"/game/join"}>
+  <.input field={f["room_code"]} />
+  <.input field={f["player_name"]} />
+  <button>submit</button>
+</.form>

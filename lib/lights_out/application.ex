@@ -8,6 +8,7 @@ defmodule LightsOut.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      {DynamicSupervisor, name: LightsOut.Game.Supervisor, strategy: :one_for_one},
       {Registry, keys: :unique, name: LightsOut.Game.Registry},
       LightsOutWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:lights_out, :dns_cluster_query) || :ignore},

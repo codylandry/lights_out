@@ -8,16 +8,16 @@
   </div>
 
   <div
-    class="grid gap-4"
+    class="grid gap-1 w-96"
     style={"grid-template-columns: repeat(#{Game.Board.size(@game.board)}, 1fr)"}
   >
     <div
       :for={{{x, y}, cell} <- @game.board}
+      class={"#{if cell, do: "bg-fuchsia-500", else: "bg-fuchsia-900 brightness-1"} h-12"}
       phx-click="toggle-cell"
       phx-value-x={x}
       phx-value-y={y}
     >
-      <%= cell %>
     </div>
   </div>
 <% else %>

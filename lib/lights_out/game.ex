@@ -26,7 +26,14 @@ defmodule LightsOut.Game do
   end
 
   def add_player(game, player_name) do
-    %{game | players: game.players ++ [player_name]}
+    updated_players = game.players ++ [player_name]
+
+    unique_players =
+      updated_players
+      |> Enum.into(MapSet.new())
+      |> Enum.into([])
+
+    %{game | players: unique_players}
   end
 
   def remove_player(game, player_name) do
