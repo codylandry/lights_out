@@ -3,7 +3,7 @@ defmodule LightsOutWeb.GameLive.Index do
   alias LightsOut.Game
 
   @impl true
-  def mount(%{"code" => code, "player" => player}, _session, socket) do
+  def mount(%{"code" => code, "player" => player} = params, _session, socket) do
     if connected?(socket) do
       # ensures `terminate` runs when the process shuts down
       Process.flag(:trap_exit, true)
@@ -14,6 +14,13 @@ defmodule LightsOutWeb.GameLive.Index do
 
         socket
         |> assign(code: code, game: Game.Server.get_game(code), player: player)
+        |> then(fn socket ->
+          if socket.assigns.game.turn == 0 do
+            push_event(socket, "game-start", %{})
+          else
+            socket
+          end
+        end)
         |> ok()
       else
         socket

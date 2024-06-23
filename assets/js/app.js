@@ -28,9 +28,13 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken }
 })
 
+window.addEventListener("phx:game-start", (e) => {
+  var audio = new Audio('/audio/start.wav');
+  audio.volume = 0.2
+  audio.play();
+})
 
 window.addEventListener("phx:toggle", (e) => {
-  console.log('event triggered')
   var audio = new Audio('/audio/toggle.wav');
   audio.volume = 0.2
   audio.play();
